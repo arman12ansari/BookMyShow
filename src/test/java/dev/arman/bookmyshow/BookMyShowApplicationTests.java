@@ -1,6 +1,7 @@
 package dev.arman.bookmyshow;
 
 import dev.arman.bookmyshow.controllers.BookingController;
+import dev.arman.bookmyshow.controllers.PaymentController;
 import dev.arman.bookmyshow.controllers.UserController;
 import dev.arman.bookmyshow.dtos.*;
 import dev.arman.bookmyshow.models.*;
@@ -21,6 +22,9 @@ class BookMyShowApplicationTests {
 
     @Autowired
     private BookingController bookingController;
+
+    @Autowired
+    private PaymentController paymentController;
 
     @Autowired
     private SeatRepository seatRepository;
@@ -86,6 +90,18 @@ class BookMyShowApplicationTests {
 
         System.out.println(createBookingResponseDto.getBookingId());
         System.out.println(createBookingResponseDto.getResponseStatus());
+    }
+
+    @Test
+    public void testPayment() {
+        PaymentRequestDto paymentRequestDto = new PaymentRequestDto();
+        paymentRequestDto.setReferenceId("bfcffa66-6d7e-4740-b3d0-c146ec13b07f");
+        paymentRequestDto.setAmount(1000);
+
+        PaymentResponseDto paymentResponseDto = paymentController.makePayment(paymentRequestDto);
+
+        System.out.println(paymentResponseDto.getPaymentId());
+        System.out.println(paymentResponseDto.getResponseStatus());
     }
 
     @Test
