@@ -1,6 +1,7 @@
 package dev.arman.bookmyshow.services;
 
 import dev.arman.bookmyshow.exceptions.InvalidPasswordException;
+import dev.arman.bookmyshow.exceptions.UserAlreadyExistsException;
 import dev.arman.bookmyshow.exceptions.UserNotFoundException;
 import dev.arman.bookmyshow.models.User;
 import dev.arman.bookmyshow.repositories.UserRepository;
@@ -22,6 +23,12 @@ public class UserServices {
 
     public User signUp(String name, String email, String password) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if(optionalUser.isPresent()) {
+            throw new UserAlreadyExistsException("User already exists with email: " + email);
+        }
 
         User user = new User();
         user.setName(name);
